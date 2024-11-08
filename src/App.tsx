@@ -1,18 +1,18 @@
 import React from "react";
+import DefaultLayout from "./components/layouts/defaultLayout/DefaultLayout";
 import "./App.css";
-
-const headerStyles: React.CSSProperties = {
-    height: "64px",
-    left: "0px",
-    right: "0px",
-    position: "fixed",
-};
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/login/Login";
+import MainPage from "./pages/mainPage/MainPage";
 
 function App() {
     return (
-        <div>
-            <header style={headerStyles}></header>
-        </div>
+        <Routes>
+            <Route path="/" element={<DefaultLayout />}>
+                <Route index element={<MainPage />} />
+                <Route path="login" element={<Login />}/>
+            </Route>
+        </Routes>
     );
 }
 
