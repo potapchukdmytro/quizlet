@@ -11,9 +11,9 @@ const GuestRoutes = () => {
             <Route path="/" element={<GuestLayout />}>
                 <Route index element={<MainPage />} />
                 <Route path="login" element={<Login />} />
-                <Route path="*" element={<Page />}/>
+                <Route path="*" element={<NotFoundPage />}/>
             </Route>
-        </Routes>NotFound
+        </Routes>
     );
 };
 
