@@ -2,22 +2,27 @@ import React from "react";
 import { InputText } from "primereact/inputtext";
 import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { ILoginValues } from "../../store/reducers/auth/types";
 import * as Yup from "yup";
 import { useActions } from "../../hooks/useActions";
 
 const Login = () => {
+    const { login } = useActions();
+    const navigate = useNavigate();
+
     const initialValues: ILoginValues = {
         email: "",
-        password: ""
+        password: "",
     };
 
-    const { login } = useActions();
-
     const handleSubmit = async (values: ILoginValues) => {
-        await login(values);
+        const result: any = await login(values);
+
+        if (result.success) {
+            navigate("/");
+        }
     };
 
     const validationSchema = Yup.object<ILoginValues>({

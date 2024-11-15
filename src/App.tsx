@@ -1,18 +1,41 @@
-import React from "react";
-import DefaultLayout from "./components/layouts/defaultLayout/DefaultLayout";
+import React, { useEffect } from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Login from "./pages/login/Login";
-import MainPage from "./pages/mainPage/MainPage";
+import { Routes } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { AuthActionTypes, IUserModel } from "./store/reducers/auth/types";
+import { PrimeReactProvider } from "primereact/api";
+import { useTypedSelector } from "./hooks/useTypedSelector";
+import UserRouters from "./routes/UserRoutes";
+import GuestRoutes from "./routes/GuestRoutes";
 
 function App() {
+    const dispatch = useDispatch();
+    const { isAuth } = useTypedSelector((state) => state.authReducer);
+
+    // login user
+    useEffect(() => {
+        const accessToken = localStorage.getItem("aut");
+
+        if (accessToken) {
+            const jwt = jwtDecode<IUserModel>(accessToken);
+
+            const user: IUserModel = {
+                id: jwt.id,
+                email: jwt.email,
+                firstName: jwt.firstName,
+                lastName: jwt.lastName,
+                role: jwt.role,
+            };
+
+            dispatch({ type: AuthActionTypes.SIGN_IN, payload: user });
+        }
+    }, []);
+
     return (
-        <Routes>
-            <Route path="/" element={<DefaultLayout />}>
-                <Route index element={<MainPage />} />
-                <Route path="login" element={<Login />}/>
-            </Route>
-        </Routes>
+        <PrimeReactProvider>
+            {isAuth ? <UserRouters /> : <GuestRoutes />}
+        </PrimeReactProvider>
     );
 }
 

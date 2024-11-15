@@ -12,11 +12,6 @@ export interface IUserModel {
     lastName: string
 };
 
-export interface IAuthAction {
-    type: AuthActionTypes,
-    payload: any
-};
-
 export interface ILoginValues {
     email: string;
     password: string;
@@ -30,4 +25,9 @@ export enum AuthActionTypes {
 export interface ILoginResponse {
     accessToken: string,
     refreshToken: string
-}
+};
+
+export interface IAuthAction {
+    type: AuthActionTypes,
+    payload: any
+};

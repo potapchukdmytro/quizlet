@@ -4,8 +4,13 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import ServiceResponse from "../../../serviceResponse";
 
+export interface ActionResult {
+    success: boolean;
+    message: string;
+};
+
 export const login =
-    (values: ILoginValues) => async (dispatch: Dispatch<IAuthAction>) => {
+    (values: ILoginValues) => async (dispatch: Dispatch<IAuthAction>): Promise<ActionResult> => {
         try {
             const response = await axios.post<ServiceResponse<ILoginResponse>>(
                 "https://localhost:5000/api/account/signin",
@@ -33,7 +38,21 @@ export const login =
             };
 
             dispatch({ type: AuthActionTypes.SIGN_IN, payload: user });
+
+            const result: ActionResult = {
+                success: true,
+                message: "Успішний вхід"
+            };
+
+            return result;
         } catch (error) {
             console.log("login error", error);
+
+            const result: ActionResult = {
+                success: false,
+                message: "Не вдалося увійти"
+            };
+
+            return result;
         }
     };
