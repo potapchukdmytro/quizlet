@@ -13,7 +13,7 @@ export const login =
     (values: ILoginValues) => async (dispatch: Dispatch<IAuthAction>): Promise<ActionResult> => {
         try {
             const response = await axios.post<ServiceResponse<ILoginResponse>>(
-                "https://localhost:5000/api/account/signin",
+                "https://pd324api-ggb8cad8eqb8ctc0.northeurope-01.azurewebsites.net/api/account/signin",
                 values,
                 {
                     headers: {

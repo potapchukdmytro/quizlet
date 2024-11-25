@@ -6,8 +6,13 @@ import { jwtDecode } from "jwt-decode";
 import { AuthActionTypes, IUserModel } from "./store/reducers/auth/types";
 import { PrimeReactProvider } from "primereact/api";
 import { useTypedSelector } from "./hooks/useTypedSelector";
-import UserRouters from "./routes/UserRoutes";
-import GuestRoutes from "./routes/GuestRoutes";
+import { Route } from "react-router-dom";
+import UserLayout from "./components/layouts/userLayout/UserLayout";
+import UserHomePage from "./pages/userPages/userHomePage/UserHomePage";
+import NotFoundPage from "./pages/notFound/NotFoundPage";
+import GuestLayout from "./components/layouts/guestLayout/GuestLayout";
+import MainPage from "./pages/mainPage/MainPage";
+import Login from "./pages/login/Login";
 
 function App() {
     const dispatch = useDispatch();
@@ -34,7 +39,19 @@ function App() {
 
     return (
         <PrimeReactProvider>
-            {isAuth ? <UserRouters /> : <GuestRoutes />}
+            <Routes>
+                {isAuth ? (
+                    <Route path="/" element={<UserLayout />}>
+                        <Route index element={<UserHomePage />} />
+                    </Route>
+                ) : (
+                    <Route path="/" element={<GuestLayout />}>
+                        <Route index element={<MainPage />} />
+                        <Route path="login" element={<Login />} />
+                    </Route>
+                )}
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
         </PrimeReactProvider>
     );
 }
