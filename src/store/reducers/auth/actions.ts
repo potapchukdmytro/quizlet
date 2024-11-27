@@ -3,6 +3,7 @@ import { AuthActionTypes, IAuthAction, ILoginValues, IUserModel, ILoginResponse 
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import ServiceResponse from "../../../serviceResponse";
+import { APP_ENV } from "../../../env";
 
 export interface ActionResult {
     success: boolean;
@@ -13,7 +14,7 @@ export const login =
     (values: ILoginValues) => async (dispatch: Dispatch<IAuthAction>): Promise<ActionResult> => {
         try {
             const response = await axios.post<ServiceResponse<ILoginResponse>>(
-                "https://pd324api-ggb8cad8eqb8ctc0.northeurope-01.azurewebsites.net/api/account/signin",
+                APP_ENV.API_URL + "account/signin",
                 values,
                 {
                     headers: {
